@@ -1,16 +1,18 @@
-export const API_KEY = (number) => {
-    switch (number) {
-    case 1:
-        return 'KHzdj1OxPJRiUyRNnS0YUGxGIkLQb8AL';
+// API keys
 
-    case 2:
-        return '5l5FeU1u8XiTD86mLuATtsXevbARXXKc';
-    }
+export const KEY_1 = 'KHzdj1OxPJRiUyRNnS0YUGxGIkLQb8AL';
 
-    return -1;
-};
+export const KEY_2 = '5l5FeU1u8XiTD86mLuATtsXevbARXXKc';
 
-const TRENDING_ENDPOINT = 'https://api.giphy.com/v1/gifs/trending';
-const SEARCH_ENDPOINT = 'https://api.giphy.com/v1/gifs/search';
-const DETAILS_ENDPOINT = (id) => `https://api.giphy.com/v1/gifs/${id}`;
-const UPLOAD_ENDPOINT = 'https://upload.giphy.com/v1/gifs';
+
+// API endpoints
+
+export const trendingEndpoint = (key) => `https://api.giphy.com/v1/gifs/trending?api_key=${key}`;
+
+export const searchEndpoint = (key) => `https://api.giphy.com/v1/gifs/search?api_key=${key}`;
+
+export const singleGifEndpoint = (key, id) => `https://api.giphy.com/v1/gifs/${id}?api_key=${key}`;
+
+export const multipleGifsEndpoint = (key, ...ids) => `https://api.giphy.com/v1/gifs?ids=${ids.join(',')}&api_key=${key}`;
+
+export const uploadEndpoint = 'https://upload.giphy.com/v1/gifs';
