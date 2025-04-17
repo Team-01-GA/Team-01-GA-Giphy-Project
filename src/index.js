@@ -1,10 +1,12 @@
 import { DETAILS, FAVORITES, SEARCH, TRENDING, UPLOAD, UPLOADED } from './common/constants.js';
-import { q } from './common/helpers.js';
-import { loadDetailsView, loadSearchView, loadTrendingView } from './events/navEvents.js';
+import { q, qs } from './common/helpers.js';
+import { loadDetailsView, loadSearchView, loadTrendingView, loadUploadView } from './events/navEvents.js';
+import { uploadGifToServer } from './requests/requestService.js';
 
 const MAIN_CONTAINER = q('#dynamic-view');
-const input = q('#search-input');
+const searchInput = q('#search-input');
 const trending = q('#trending-btn');
+const upload = q('#upload-btn');
 
 
 const loadPage = async (page, payload = null) => {
@@ -23,7 +25,7 @@ const loadPage = async (page, payload = null) => {
         return;
 
     case UPLOAD:
-
+        MAIN_CONTAINER.innerHTML = loadUploadView();
         return;
 
     case UPLOADED:
@@ -36,7 +38,7 @@ const loadPage = async (page, payload = null) => {
     }
 };
 
-MAIN_CONTAINER.addEventListener('click', async () => {
+MAIN_CONTAINER.addEventListener('click', async (event) => {
 
     if (event.target.classList.contains('gif-list-card')) {
         const gifID = event.target.id;
@@ -60,12 +62,29 @@ MAIN_CONTAINER.addEventListener('click', async () => {
         });
     }
 
+    if (event.target.id === 'upload-gif-btn') {
+        const uploadFields = qs('#upload-form input');
+        const gifName = `${uploadFields[0]} by ${uploadFields[1]}`;
+        const file = uploadFields[2].files[0];
+
+        if (!file) {
+            alert('Please provide a GIF file.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('title', gifName);
+
+        uploadGifToServer(formData);
+    }
+
 });
 
 
-input.addEventListener('keydown', (e) => {
+searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-        const query = input.value.trim();
+        const query = searchInput.value.trim();
         if (query) {
             loadPage(SEARCH, query);
         }
@@ -76,5 +95,9 @@ trending.addEventListener('click', () => {
     loadPage(TRENDING);
 });
 
+upload.addEventListener('click', () => {
+    loadPage(UPLOAD);
+});
 
-loadPage(TRENDING);
+
+loadPage(UPLOAD);

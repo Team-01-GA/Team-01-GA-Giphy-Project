@@ -1,12 +1,13 @@
 import { getGifById, getTrendingGifs, getGifsByQuery } from '../requests/requestService.js';
 import { gifDetailsView } from '../views/detailsView.js';
 import { gifListView } from '../views/listView.js';
+import { uploadView } from '../views/uploadView.js';
 
 
 export const loadTrendingView = async () => {
     const dataTrending = await getTrendingGifs();
 
-    return gifListView(dataTrending.data);
+    return gifListView(dataTrending);
 };
 
 export const loadDetailsView = async (gifID) => {
@@ -22,3 +23,6 @@ export const loadSearchView = async (query) => {
     return gifListView(searchData);
 };
 
+export const loadUploadView = () => {
+    return uploadView();
+};

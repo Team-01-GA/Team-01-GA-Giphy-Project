@@ -9,3 +9,5 @@ export const UPLOAD = 'UPLOAD';
 export const UPLOADED = 'UPLOADED';
 
 export const FAVORITES = 'FAVORITES';
+
+export const GIF_LIMIT = '50';

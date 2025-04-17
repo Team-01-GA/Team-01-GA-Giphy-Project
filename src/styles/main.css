@@ -13,7 +13,7 @@ nav {
     padding-bottom: 16px;
     padding-left: 32px;
     padding-right: 32px;
-    background-color: rgb(34, 34, 34);
+    background-color: rgb(96, 96, 96);
 }
 
 nav button {
@@ -39,7 +39,7 @@ nav button:hover {
 }
 
 #dynamic-view {
-    background-color: rgb(96, 96, 96);
+    background-color: rgb(34, 34, 34);
     min-height: 100vh;
 
     display: flex;
@@ -172,5 +172,66 @@ nav button:hover {
             border-radius: 0 0 15px 15px;
             color: white;
         }
+    }
+}
+
+#upload-gif {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    height: 250px;
+    border: 3px solid white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+#upload-form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 20px 30px;
+
+    & form {
+        height: 100%;
+    }
+
+    & input[type="file"] {
+        display: none;
+    }
+}
+
+.upload-field {
+    display: flex;
+    width: 95%;
+    height: 50px;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 15px;
+    padding-left: 15px;
+    margin: 10px 0;
+    color: rgb(190, 190, 190);
+}
+
+label.upload-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & span {
+        text-align: center;
+    }
+}
+
+#upload-btn-container {
+    width: 50%;
+
+    & button {
+        width: 100%;
+        height: 100%;
+        font-size: 48px;
+        border: none;
+        background-color: rgb(86, 110, 86);
+        color: white;
     }
 }
