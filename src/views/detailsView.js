@@ -1,7 +1,7 @@
-export const gifDetailsView = (container, gif) => {
+export const gifDetailsView = (gif) => {
     const date = new Date(gif.import_datetime);
 
-    container.innerHTML = `
+    const structure = `
       <div class="details-wrapper">
         <div class="gif-container">
           <img src="${gif.images.original.url}" alt="${gif.title}">
@@ -21,18 +21,5 @@ export const gifDetailsView = (container, gif) => {
       </div>
     `;
 
-    const copyBtn = container.querySelector('.copy-btn');
-    const overlay = container.querySelector('.copied-overlay');
-    copyBtn.addEventListener('click', async () => {
-        try {
-            await navigator.clipboard.writeText(gif.url);
-            overlay.style.opacity = '1';
-
-            setTimeout(() => {
-                overlay.style.opacity = '0';
-            }, 1500);
-        } catch (error) {
-            console.error('Failed to copy GIF URL', error);
-        }
-    });
+    return structure;
 };
