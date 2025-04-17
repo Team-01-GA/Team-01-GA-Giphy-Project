@@ -1,5 +1,5 @@
 import { GIF_LIMIT } from '../common/constants.js';
-import { KEY_1, KEY_2, trendingEndpoint, singleGifEndpoint, searchEndpoint, uploadEndpoint } from '../data/api.js';
+import { KEY_1, KEY_2, trendingEndpoint, singleGifEndpoint, searchEndpoint, uploadEndpoint, multipleGifsEndpoint, randomEndpoint } from '../data/api.js';
 
 
 export const getTrendingGifs = async () => {
@@ -54,6 +54,31 @@ export const uploadGifToServer = async (formData) => {
         return data.data.id;
     } catch (error) {
         console.error('Error in uploadGifToServer:', error);
+        return null;
+    }
+};
+
+
+export const getMultipleGifsByIds = async (ids) => {
+    try {
+        const response = await fetch(`${multipleGifsEndpoint(KEY_2, ids)}`);
+        if (!response.ok) throw new Error('Failed to fetch GIFs by ids (multiple)');
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error('Error in getMultipleGifsByIds:', error);
+        return null;
+    }
+};
+
+export const getRandomGif = async () => {
+    try {
+        const response = await fetch(randomEndpoint(KEY_2));
+        if (!response.ok) throw new Error('Failed to fetch random GIF');
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error('Error in getRandomGif:', error);
         return null;
     }
 };

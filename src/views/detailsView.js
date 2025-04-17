@@ -13,7 +13,7 @@ export const gifDetailsView = (gif) => {
           <p><strong>Date:</strong> ${date.toLocaleDateString('en-GB')} - ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</p>
   
           <div class="gif-details-buttons">
-            <button class="details-btn heart">♡</button>
+            <button class="details-btn heart-btn">♡</button>
             <button class="details-btn copy-btn">Copy</button>
             <a class="details-btn" href="${gif.url}" target="_blank" rel="noopener noreferrer">Open</a>
           </div>
