@@ -2,7 +2,7 @@ import { KEY_1, KEY_2, trendingEndpoint, singleGifEndpoint } from '../data/api.j
 
 
 export const getTrendingGifs = async () => {
-    const response = await fetch(trendingEndpoint(KEY_1));
+    const response = await fetch(`${trendingEndpoint(KEY_1)}&limit=50`);
 
     return response.json();
 };
