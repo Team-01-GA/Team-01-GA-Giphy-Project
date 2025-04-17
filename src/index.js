@@ -1,10 +1,13 @@
 import { DETAILS, FAVORITES, SEARCH, TRENDING, UPLOAD, UPLOADED } from './common/constants.js';
 import { q } from './common/helpers.js';
-import { loadDetailsView, loadTrendingView } from './events/navEvents.js';
+import { loadDetailsView, loadSearchView, loadTrendingView } from './events/navEvents.js';
 
 const MAIN_CONTAINER = q('#dynamic-view');
+const input = q('#search-input');
+const trending = q('#trending-btn');
 
-const loadPage = async (page, id) => {
+
+const loadPage = async (page, payload = null) => {
 
     switch (page) {
     case TRENDING:
@@ -12,11 +15,11 @@ const loadPage = async (page, id) => {
         return;
 
     case SEARCH:
-
+        MAIN_CONTAINER.innerHTML = await loadSearchView(payload);
         return;
 
     case DETAILS:
-        MAIN_CONTAINER.innerHTML = await loadDetailsView(id);
+        MAIN_CONTAINER.innerHTML = await loadDetailsView(payload);
         return;
 
     case UPLOAD:
@@ -58,5 +61,20 @@ MAIN_CONTAINER.addEventListener('click', async () => {
     }
 
 });
+
+
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        const query = input.value.trim();
+        if (query) {
+            loadPage(SEARCH, query);
+        }
+    }
+});
+
+trending.addEventListener('click', () => {
+    loadPage(TRENDING);
+});
+
 
 loadPage(TRENDING);

@@ -1,4 +1,4 @@
-import { KEY_1, KEY_2, trendingEndpoint, singleGifEndpoint } from '../data/api.js';
+import { KEY_1, KEY_2, trendingEndpoint, singleGifEndpoint, searchEndpoint } from '../data/api.js';
 
 
 export const getTrendingGifs = async () => {
@@ -16,6 +16,18 @@ export const getGifById = async (id) => {
         return data.data;
     } catch (error) {
         console.error('Error in getGifById:', error);
+        return null;
+    }
+};
+
+
+export const getGifsByQuery = async (query) => {
+    try {
+        const response = await fetch(`${searchEndpoint(KEY_2)}&q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error('Error in getGifsByQuery:', error);
         return null;
     }
 };

@@ -1,4 +1,4 @@
-import { getGifById, getTrendingGifs } from '../requests/requestService.js';
+import { getGifById, getTrendingGifs, getGifsByQuery } from '../requests/requestService.js';
 import { gifDetailsView } from '../views/detailsView.js';
 import { gifListView } from '../views/listView.js';
 
@@ -14,3 +14,11 @@ export const loadDetailsView = async (gifID) => {
 
     return gifDetailsView(dataDetails);
 };
+
+
+export const loadSearchView = async (query) => {
+    const searchData = await getGifsByQuery(query);
+
+    return gifListView(searchData);
+};
+
