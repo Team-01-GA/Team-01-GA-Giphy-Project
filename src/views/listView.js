@@ -1,6 +1,6 @@
-export const gifListView = (gifList) => `
+export const gifListView = (gifList, title) => `
     <div id="gif-list">
-        <h1 id="title">Trending GIFs Right Now</h1>
+        <h1 id="title">${title}</h1>
         <div class="content">
             ${gifList.map(gifObject => gifSingleView(gifObject)).join(`\n`)}
         </div>

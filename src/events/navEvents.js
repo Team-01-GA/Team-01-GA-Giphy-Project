@@ -1,3 +1,4 @@
+import { FAVORITES_TITLE, SEARCH_TITLE, TRENDING_TITLE, UPLOADED_TITLE } from '../common/constants.js';
 import { getGifById, getTrendingGifs, getGifsByQuery, getMultipleGifsByIds, getRandomGif } from '../requests/requestService.js';
 import { gifDetailsView } from '../views/detailsView.js';
 import { gifListView } from '../views/listView.js';
@@ -8,7 +9,7 @@ import { getFavoriteIds, getUploadedGifs } from './localStorage.js';
 export const loadTrendingView = async () => {
     const dataTrending = await getTrendingGifs();
 
-    return gifListView(dataTrending);
+    return gifListView(dataTrending, TRENDING_TITLE);
 };
 
 export const loadDetailsView = async (gifID) => {
@@ -21,7 +22,7 @@ export const loadDetailsView = async (gifID) => {
 export const loadSearchView = async (query) => {
     const searchData = await getGifsByQuery(query);
 
-    return gifListView(searchData);
+    return gifListView(searchData, `${SEARCH_TITLE}"${query}"`);
 };
 
 export const loadUploadView = async () => {
@@ -37,7 +38,7 @@ export const loadUploadView = async () => {
 
     return `${uploadView()}
         <div id="uploads">
-            ${gifListView(uploadedGIFs)}
+            ${gifListView(uploadedGIFs, UPLOADED_TITLE)}
         </div>
     `;
 };
@@ -60,5 +61,5 @@ export const loadFavoritesView = async () => {
     }
 
     const favoritesData = await getMultipleGifsByIds(favoritesArray);
-    return gifListView(favoritesData);
+    return gifListView(favoritesData, FAVORITES_TITLE);
 };
