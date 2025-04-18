@@ -83,6 +83,19 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
         }
     }
 
+    const listHeartButton = event.target.classList.contains('single-view-btn') &&
+                            event.target.classList.contains('heart-btn');
+
+    if (listHeartButton) {
+        const gifID = event.target.dataset.id;
+
+        if (toggleFavorite(gifID)) {
+            event.target.innerHTML = FULL_HEART;
+        } else {
+            event.target.innerHTML = EMPTY_HEART;
+        }
+    }
+
 
     if (event.target.id === 'upload-gif-btn') {
         const uploadFields = qs('#upload-form input');
