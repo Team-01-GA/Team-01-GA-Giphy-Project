@@ -31,19 +31,35 @@ const favoritesBtn = q('#favorites-btn');
 const loadPage = async (page, payload = null) => {
     switch (page) {
     case TRENDING:
-        MAIN_CONTAINER.innerHTML = await loadTrendingView();
+        MAIN_CONTAINER.style.opacity = 0;
+        setTimeout(async () => MAIN_CONTAINER.innerHTML = await loadTrendingView(), 300);
+        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 500);
         return;
     case SEARCH:
-        MAIN_CONTAINER.innerHTML = await loadSearchView(payload);
+        MAIN_CONTAINER.style.opacity = 0;
+        setTimeout(async () => MAIN_CONTAINER.innerHTML = await loadSearchView(payload), 300);
+        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 1000);
         return;
     case DETAILS:
-        MAIN_CONTAINER.innerHTML = await loadDetailsView(payload);
+        MAIN_CONTAINER.style.opacity = 0;
+        setTimeout(async () => MAIN_CONTAINER.innerHTML = await loadDetailsView(payload), 300);
+        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 500);
         return;
     case UPLOAD:
-        MAIN_CONTAINER.innerHTML = await loadUploadView();
+        MAIN_CONTAINER.style.opacity = 0;
+        await new Promise((resolve) => {
+            setTimeout(async () => {
+                MAIN_CONTAINER.innerHTML = await loadUploadView();
+                resolve();
+            }, 300);
+        });
+        // MAIN_CONTAINER.innerHTML = await loadUploadView();
+        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 500);
         return;
     case FAVORITES:
-        MAIN_CONTAINER.innerHTML = await loadFavoritesView();
+        MAIN_CONTAINER.style.opacity = 0;
+        setTimeout(async () => MAIN_CONTAINER.innerHTML = await loadFavoritesView(), 300);
+        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 500);
         return;
     }
 };
@@ -98,9 +114,9 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
 
 
     if (event.target.id === 'upload-gif-btn') {
-        const uploadFields = qs('#upload-form input');
-        const gifName = `${uploadFields[0]} by ${uploadFields[1]}`;
-        const file = uploadFields[2].files[0];
+        event.target.textContent = 'Uploading...';
+        const uploader = qs('#uploader');
+        const file = uploader[0].files[0];
 
         if (!file) {
             alert('Please provide a GIF file.');
@@ -109,7 +125,6 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
 
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('title', gifName);
 
         const uploadedId = await uploadGifToServer(formData);
         storeUploadedGifId(uploadedId);
@@ -132,8 +147,25 @@ trending.addEventListener('click', () => {
     loadPage(TRENDING);
 });
 
-upload.addEventListener('click', () => {
-    loadPage(UPLOAD);
+upload.addEventListener('click', async () => {
+    await loadPage(UPLOAD);
+
+    const fileInput = q('#uploader');
+    const fileLabel = q('.upload-field span');
+    const uploadBtn = q('#upload-gif-btn');
+
+    fileLabel.textContent = 'Choose file...';
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            fileLabel.textContent = fileInput.files[0].name;
+            fileLabel.style.fontSize = 'initial';
+            uploadBtn.classList.add('active');
+        } else {
+            fileLabel.textContent = 'Choose file...';
+            uploadBtn.classList.remove('active');
+        }
+    });
 });
 
 favoritesBtn.addEventListener('click', () => {
