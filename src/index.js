@@ -4,7 +4,6 @@ import {
     SEARCH,
     TRENDING,
     UPLOAD,
-    UPLOADED,
     FULL_HEART,
     EMPTY_HEART,
 } from './common/constants.js';
@@ -21,7 +20,7 @@ import {
 
 import { uploadGifToServer } from './requests/requestService.js';
 
-import { getFavoriteIds, toggleFavorite } from './events/localStorage.js';
+import { getFavoriteIds, storeUploadedGifId, toggleFavorite } from './events/localStorage.js';
 
 const MAIN_CONTAINER = q('#dynamic-view');
 const searchInput = q('#search-input');
@@ -41,12 +40,10 @@ const loadPage = async (page, payload = null) => {
         MAIN_CONTAINER.innerHTML = await loadDetailsView(payload);
         return;
     case UPLOAD:
-        MAIN_CONTAINER.innerHTML = loadUploadView();
+        MAIN_CONTAINER.innerHTML = await loadUploadView();
         return;
     case FAVORITES:
         MAIN_CONTAINER.innerHTML = await loadFavoritesView();
-        return;
-    case UPLOADED:
         return;
     }
 };
@@ -101,7 +98,10 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
         formData.append('file', file);
         formData.append('title', gifName);
 
-        uploadGifToServer(formData);
+        const uploadedId = await uploadGifToServer(formData);
+        storeUploadedGifId(uploadedId);
+
+        loadPage(UPLOAD);
     }
 
 });

@@ -2,7 +2,7 @@ import { getGifById, getTrendingGifs, getGifsByQuery, getMultipleGifsByIds, getR
 import { gifDetailsView } from '../views/detailsView.js';
 import { gifListView } from '../views/listView.js';
 import { uploadView } from '../views/uploadView.js';
-import { getFavoriteIds } from './localStorage.js';
+import { getFavoriteIds, getUploadedGifs } from './localStorage.js';
 
 
 export const loadTrendingView = async () => {
@@ -24,8 +24,22 @@ export const loadSearchView = async (query) => {
     return gifListView(searchData);
 };
 
-export const loadUploadView = () => {
-    return uploadView();
+export const loadUploadView = async () => {
+    const uploadedGIFs = await getUploadedGifs();
+
+    if (!uploadedGIFs) {
+        return `${uploadView()}
+            <div id="uploads-fallback">
+                <p>You haven't uploaded anything yet - consider contributing!</p>
+            </div>
+        `;
+    }
+
+    return `${uploadView()}
+        <div id="uploads">
+            ${gifListView(uploadedGIFs)}
+        </div>
+    `;
 };
 
 export const loadFavoritesView = async () => {
@@ -38,7 +52,7 @@ export const loadFavoritesView = async () => {
             return `
             <div class="random-fallback">
                 <p>You haven't favorited anything yet - here's a random GIF for you</p>
-                ${gifListView([randomGif])}
+                ${gifDetailsView(randomGif)}
             </div>
             `;
         }

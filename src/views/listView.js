@@ -9,6 +9,6 @@ export const gifListView = (gifList) => `
 
 export const gifSingleView = (gifObject) => `
     <div id="${gifObject.id}" class="gif-list-card" style="background-image: url('${gifObject.images.downsized_medium.url}')">
-        <p class="gif-name">${gifObject.title}</p>
+        ${gifObject.title ? `<p class="gif-name">${gifObject.title}</p>` : ''}
     </div>
 `;
