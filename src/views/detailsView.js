@@ -1,5 +1,11 @@
+import { EMPTY_HEART, FULL_HEART } from '../common/constants.js';
+import { getFavoriteIds } from '../events/localStorage.js';
+
 export const gifDetailsView = (gif) => {
     const date = new Date(gif.import_datetime);
+
+    const isFav = getFavoriteIds().includes(gif.id);
+    const heartSymbol = isFav ? FULL_HEART : EMPTY_HEART;
 
     const structure = `
       <div class="details-wrapper">
@@ -13,8 +19,8 @@ export const gifDetailsView = (gif) => {
           <p><strong>Date:</strong> ${date.toLocaleDateString('en-GB')} - ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</p>
   
           <div class="gif-details-buttons">
-            <button class="details-btn heart-btn">♡</button>
-            <button class="details-btn copy-btn">Copy</button>
+            <button class="details-btn heart-btn" data-id="${gif.id}">${heartSymbol}</button>
+            <button class="details-btn copy-btn" data-url="${gif.url}">Copy</button>
             <a class="details-btn" href="${gif.url}" target="_blank" rel="noopener noreferrer">Open</a>
           </div>
         </div>

@@ -17,7 +17,7 @@ export const gifSingleView = (gifObject) => {
     return `
     <div id="${gifObject.id}" class="gif-list-card" style="background-image: url('${gifObject.images.downsized_medium.url}')">
         <div class="gif-buttons">
-            <button class="single-view-btn heart-btn" data-id="${gifObject.id}">${heartSymbol}</button>
+            <button class="single-view-btn" data-id="${gifObject.id}">${heartSymbol}</button>
         </div>
         ${gifObject.title ? `
             <div class="gif-details-small">

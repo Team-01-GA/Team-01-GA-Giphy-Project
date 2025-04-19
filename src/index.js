@@ -20,7 +20,7 @@ import {
 
 import { uploadGifToServer } from './requests/requestService.js';
 
-import { getFavoriteIds, storeUploadedGifId, toggleFavorite } from './events/localStorage.js';
+import { storeUploadedGifId, toggleFavorite } from './events/localStorage.js';
 
 const MAIN_CONTAINER = q('#dynamic-view');
 const searchInput = q('#search-input');
@@ -70,39 +70,33 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
         const gifID = event.target.id;
 
         await loadPage(DETAILS, gifID);
+    }
 
-        const heartBtn = q('.heart-btn');
-        if (heartBtn) {
-            const isFav = getFavoriteIds().includes(gifID);
-            heartBtn.textContent = isFav ? FULL_HEART : EMPTY_HEART;
+    if (event.target.classList.contains('heart-btn')) {
+        const gifID = event.target.dataset.id;
 
-            heartBtn.addEventListener('click', () => {
-                const wasAdded = toggleFavorite(gifID);
-                heartBtn.textContent = wasAdded ? FULL_HEART : EMPTY_HEART;
-            });
-        }
-
-        const copyBtn = q('.copy-btn');
-        const overlay = q('.copied-overlay');
-        const url = q('a.details-btn')?.href;
-
-        if (copyBtn && overlay && url) {
-            copyBtn.addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText(url);
-                    overlay.style.opacity = '1';
-                    setTimeout(() => (overlay.style.opacity = '0'), 1500);
-                } catch (error) {
-                    console.error('Failed to copy GIF URL', error);
-                }
-            });
+        if (toggleFavorite(gifID)) {
+            event.target.innerHTML = FULL_HEART;
+        } else {
+            event.target.innerHTML = EMPTY_HEART;
         }
     }
 
-    const listHeartButton = event.target.classList.contains('single-view-btn') &&
-                            event.target.classList.contains('heart-btn');
+    if (event.target.classList.contains('copy-btn')) {
+        const overlay = q('.copied-overlay');
+        const gifURL = event.target.dataset.url;
 
-    if (listHeartButton) {
+        try {
+            await navigator.clipboard.writeText(gifURL);
+            overlay.style.opacity = '1';
+            setTimeout(() => (overlay.style.opacity = '0'), 1500);
+        } catch (error) {
+            console.error('Failed to copy GIF URL', error);
+        }
+    }
+
+
+    if (event.target.classList.contains('single-view-btn')) {
         const gifID = event.target.dataset.id;
 
         if (toggleFavorite(gifID)) {

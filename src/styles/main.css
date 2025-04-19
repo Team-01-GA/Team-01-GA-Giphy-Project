@@ -174,7 +174,7 @@ nav button:hover {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-    z-index: 1;
+    z-index: 20;
 }
 
 .gif-container {
@@ -268,8 +268,10 @@ nav button:hover {
     }
 }
 
-.single-view-btn.heart-btn {
+.single-view-btn {
     margin-right: 5%;
+    color: rgb(251 226 130);
+    cursor: pointer;
 }
 
 .gif-details-small {
