@@ -1,6 +1,13 @@
 import { EMPTY_HEART, FULL_HEART } from '../common/constants.js';
 import { getFavoriteIds } from '../events/localStorage.js';
 
+/**
+ * Generates the detailed view for a single GIF.
+ * Includes title, uploader info, upload date, and action buttons (favorite, copy, open).
+ *
+ * @param {Object} gif - The GIF object returned from the API.
+ * @return {string} - HTML markup for the detailed GIF view.
+ */
 export const gifDetailsView = (gif) => {
     const date = new Date(gif.import_datetime);
 
