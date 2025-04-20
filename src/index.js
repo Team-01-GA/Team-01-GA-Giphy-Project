@@ -28,6 +28,12 @@ const trending = q('#trending-btn');
 const upload = q('#upload-btn');
 const favoritesBtn = q('#favorites-btn');
 
+/**
+ * Dynamically loads a view based on the page type.
+ * Handles smooth transition animations and data payloads (like a search query or GIF ID).
+ * @param {string} page - The page constant to load (e.g., TRENDING, DETAILS).
+ * @param {any} [payload=null] - Optional data passed to the view loader (e.g., gif ID or search query).
+ */
 const loadPage = async (page, payload = null) => {
     switch (page) {
     case TRENDING:
@@ -64,14 +70,17 @@ const loadPage = async (page, payload = null) => {
     }
 };
 
+// Delegated click event listener for all buttons inside MAIN_CONTAINER
 MAIN_CONTAINER.addEventListener('click', async (event) => {
 
+    // Opens details view when GIF card is clicked
     if (event.target.classList.contains('gif-list-card')) {
         const gifID = event.target.id;
 
         await loadPage(DETAILS, gifID);
     }
 
+    // Toggles heart button (inside details view)
     if (event.target.classList.contains('heart-btn')) {
         const gifID = event.target.dataset.id;
 
@@ -82,6 +91,7 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
         }
     }
 
+    // Copies GIF URL to clipboard
     if (event.target.classList.contains('copy-btn')) {
         const overlay = q('.copied-overlay');
         const gifURL = event.target.dataset.url;
@@ -95,7 +105,7 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
         }
     }
 
-
+    // Toggles heart in list view
     if (event.target.classList.contains('single-view-btn')) {
         const gifID = event.target.dataset.id;
 
@@ -106,7 +116,7 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
         }
     }
 
-
+    // Handles upload button click
     if (event.target.id === 'upload-gif-btn') {
         event.target.textContent = 'Uploading...';
         const uploader = qs('#uploader');
@@ -128,6 +138,9 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
 
 });
 
+/**
+ * Triggers search when Enter is pressed in search input.
+ */
 searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         const query = searchInput.value.trim();
@@ -137,10 +150,16 @@ searchInput.addEventListener('keydown', (e) => {
     }
 });
 
+/**
+ * Loads trending view when trending button is clicked.
+ */
 trending.addEventListener('click', () => {
     loadPage(TRENDING);
 });
 
+/**
+ * Loads upload view and sets up file input interaction.
+ */
 upload.addEventListener('click', async () => {
     await loadPage(UPLOAD);
 
@@ -162,8 +181,12 @@ upload.addEventListener('click', async () => {
     });
 });
 
+/**
+ * Loads favorites view when favorites button is clicked.
+ */
 favoritesBtn.addEventListener('click', () => {
     loadPage(FAVORITES);
 });
 
+// Loads trending view on initial page load
 loadPage(TRENDING);
