@@ -1,3 +1,9 @@
+/**
+ * Generates the HTML markup for the upload GIF view.
+ * Includes a file input form and an upload button.
+ *
+ * @return {string} - HTML string for rendering the upload UI.
+ */
 export const uploadView = () => `
     <div id="upload-gif">
         <div id="upload-form">
