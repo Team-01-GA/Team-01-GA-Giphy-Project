@@ -35,39 +35,38 @@ const favoritesBtn = q('#favorites-btn');
  * @param {any} [payload=null] - Optional data passed to the view loader (e.g., gif ID or search query).
  */
 const loadPage = async (page, payload = null) => {
+    MAIN_CONTAINER.style.opacity = 0;
+
+    await new Promise(resolve => {
+        MAIN_CONTAINER.addEventListener('transitionend', resolve, { once: true });
+    });
+
+    let newContent = '';
     switch (page) {
     case TRENDING:
-        MAIN_CONTAINER.style.opacity = 0;
-        setTimeout(async () => MAIN_CONTAINER.innerHTML = await loadTrendingView(), 300);
-        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 500);
-        return;
+        newContent = await loadTrendingView();
+        break;
     case SEARCH:
-        MAIN_CONTAINER.style.opacity = 0;
-        setTimeout(async () => MAIN_CONTAINER.innerHTML = await loadSearchView(payload), 300);
-        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 1000);
-        return;
+        newContent = await loadSearchView(payload);
+        break;
     case DETAILS:
-        MAIN_CONTAINER.style.opacity = 0;
-        setTimeout(async () => MAIN_CONTAINER.innerHTML = await loadDetailsView(payload), 300);
-        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 500);
-        return;
+        newContent = await loadDetailsView(payload);
+        break;
     case UPLOAD:
-        MAIN_CONTAINER.style.opacity = 0;
-        await new Promise((resolve) => {
-            setTimeout(async () => {
-                MAIN_CONTAINER.innerHTML = await loadUploadView();
-                resolve();
-            }, 300);
-        });
-        // MAIN_CONTAINER.innerHTML = await loadUploadView();
-        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 500);
-        return;
+        newContent = await loadUploadView();
+        break;
     case FAVORITES:
-        MAIN_CONTAINER.style.opacity = 0;
-        setTimeout(async () => MAIN_CONTAINER.innerHTML = await loadFavoritesView(), 300);
-        setTimeout(() => MAIN_CONTAINER.style.opacity = 1, 500);
+        newContent = await loadFavoritesView();
+        break;
+    default:
         return;
     }
+
+    MAIN_CONTAINER.innerHTML = newContent;
+
+    requestAnimationFrame(() => {
+        MAIN_CONTAINER.style.opacity = 1;
+    });
 };
 
 /**
