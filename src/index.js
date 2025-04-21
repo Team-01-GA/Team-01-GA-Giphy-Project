@@ -70,6 +70,35 @@ const loadPage = async (page, payload = null) => {
     }
 };
 
+/**
+ * Loads the upload page while setting up the required event listeners
+ * for file input and changing color / displaying chosen file title.
+ * Used for the nav button 'Upload' and for when the view is refreshed
+ * after successfully uploading a file.
+ * @async
+ * @return {Promise<void>} Resolves when the operation is complete.
+ */
+const loadUploadsClean = async () => {
+    await loadPage(UPLOAD);
+
+    const fileInput = q('#uploader');
+    const fileLabel = q('.upload-field span');
+    const uploadBtn = q('#upload-gif-btn');
+
+    fileLabel.textContent = 'Choose file...';
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            fileLabel.textContent = fileInput.files[0].name;
+            fileLabel.style.fontSize = 'initial';
+            uploadBtn.classList.add('active');
+        } else {
+            fileLabel.textContent = 'Choose file...';
+            uploadBtn.classList.remove('active');
+        }
+    });
+};
+
 // Delegated click event listener for all buttons inside MAIN_CONTAINER
 MAIN_CONTAINER.addEventListener('click', async (event) => {
 
@@ -133,7 +162,7 @@ MAIN_CONTAINER.addEventListener('click', async (event) => {
         const uploadedId = await uploadGifToServer(formData);
         storeUploadedGifId(uploadedId);
 
-        loadPage(UPLOAD);
+        await loadUploadsClean();
     }
 
 });
@@ -146,6 +175,7 @@ searchInput.addEventListener('keydown', (e) => {
         const query = searchInput.value.trim();
         if (query) {
             loadPage(SEARCH, query);
+            searchInput.value = '';
         }
     }
 });
@@ -161,24 +191,7 @@ trending.addEventListener('click', () => {
  * Loads upload view and sets up file input interaction.
  */
 upload.addEventListener('click', async () => {
-    await loadPage(UPLOAD);
-
-    const fileInput = q('#uploader');
-    const fileLabel = q('.upload-field span');
-    const uploadBtn = q('#upload-gif-btn');
-
-    fileLabel.textContent = 'Choose file...';
-
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) {
-            fileLabel.textContent = fileInput.files[0].name;
-            fileLabel.style.fontSize = 'initial';
-            uploadBtn.classList.add('active');
-        } else {
-            fileLabel.textContent = 'Choose file...';
-            uploadBtn.classList.remove('active');
-        }
-    });
+    await loadUploadsClean();
 });
 
 /**
